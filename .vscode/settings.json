@@ -1,0 +1,21 @@
+{
+  "detectedConfig": {
+    "typescript": true,
+    "naming": "Pascal Case",
+    "unit": "px",
+    "framework": "nextjs",
+    "styling": "'Inline Styles"
+  },
+  "locofyConfig": {
+    "project_name": "hotels-and-co",
+    "id": "653599fe588627aa25cc73d6",
+    "framework": "react-nextjs",
+    "typescript": true,
+    "path": "public/",
+    "componentsPath": "/Users/manzi.../Projects/tests/hotels-and-co/src/components",
+    "screensPath": "/Users/manzi.../Projects/tests/hotels-and-co/.next/server/pages",
+    "styling": "Tailwind",
+    "unit": "px",
+    "naming": "Kebab Case"
+  }
+}

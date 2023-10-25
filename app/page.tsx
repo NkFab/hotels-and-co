@@ -1,58 +1,107 @@
-import Image from 'next/image'
-import Head from 'next/head';
+'use client'
+import MainHeader from "@/components/MainHeader";
+import ContainerFrame from "@/components/Footer";
+import Header from "@/components/Header";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React from "react";
+import { HotelsAndCo } from "./services/request";
+import PropertyCard, { IProperty } from "@/components/PropertyCard";
+import Link from "next/link"
+
 
 
 export default function Home() {
+  const hotelsAndCo = new HotelsAndCo();
+  
+  const [currentPageData, setCurrentPageData] = React.useState<IProperty[]>([]);
+  const fetch = async (p: number) => {
+    const response = await hotelsAndCo.getProperties(p, 10);
+    return response.data; 
+  };
+
+
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['PROPRTIES_LISTING'],
+    queryFn: ({ pageParam = 1 }) => {
+      if (isNaN(pageParam)) {
+        console.error('Invalid pageParam:', pageParam);
+      }
+      return fetch(pageParam);
+    },
+    getNextPageParam: (_, allPages) => allPages?.length + 1,
+    getPreviousPageParam: (_, allPages) => allPages.length - 1,
+    initialPageParam: 1,
+  });
+
+
+  const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+      fetchNextPage();
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+
+  React.useEffect(() => {
+    if (data) {
+      const pageData = data.pages.flatMap((page) =>
+        page.map((item: IProperty) => item)
+      );
+
+      setCurrentPageData((prevData) => [...prevData, ...pageData]);
+    }
+  }, [data]);
+
+
+  function getRandomNumber() {
+    const min = 1;
+    const max = 5;
+    const decimalPlaces = 1;
+
+    const randomValue = Math.random() * (max - min) + min;
+    return randomValue.toFixed(decimalPlaces);
+  }
+
   return (
-    <div>
-      <Head>
-        <title>Airbnb Clone</title>
-        <meta name="description" content="Airbnb Clone" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        {/* Navbar */}
-        <nav className="bg-white shadow-md p-4">
-          <div className="container mx-auto flex justify-between items-center">
-            {/* Airbnb Logo */}
-            <a href="/" className="text-2xl font-extrabold text-gray-900">airbnb</a>
-
-            {/* Search Bar (You can replace with your own search component) */}
-            <div className="flex items-center border rounded-full px-3 py-2">
-              <input
-                type="text"
-                placeholder="Search"
-                className="outline-none w-full pr-3 bg-transparent"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M13.293 14.293a6 6 0 111.414-1.414l5 5a1 1 0 01-1.414 1.414l-5-5zm-.88-2.674a4.5 4.5 0 10-1.414-1.414 4.5 4.5 0 001.414 1.414z"
-                  clipRule="evenodd"
+    <main className="w-full flex flex-col items-center text-center text-[18px] text-gray-800 font-p14">
+      <Header />
+      <MainHeader />
+      <div className="w-full grid grid-cols-4 gap-3 px-20 mt-[10%]">
+        {currentPageData.map((item: IProperty, _index) => {
+          return (
+              <Link href="/properties/[id]" as={`/properties/${item.id}`} key={_index} >
+                <PropertyCard
+                  id={item.id}
+                  image={item.image}
+                  location={item.location}
+                  from={item.from}
+                  to={item.to}
+                  host_name={item.host_name}
+                  price={item.price}
+                  rating={getRandomNumber()}
                 />
-              </svg>
-            </div>
+              </Link>
+          );
+        })}
+      </div>
+      {isFetchingNextPage
+        ? 'Load more'
+        : hasNextPage
+          ? 'Loading more...'
+          : 'We reached the end'}
+      <ContainerFrame />
+    </main>
 
-            {/* User Profile (You can replace with your own user profile component) */}
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-gray-900">
-                Sign in
-              </button>
-              <button className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600">
-                Sign up
-              </button>
-            </div>
-          </div>
-        </nav>
-
-        {/* Rest of your content */}
-      </main>
-    </div>
-  )
+  );
 }
