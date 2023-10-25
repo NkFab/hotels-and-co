@@ -33,7 +33,7 @@ export default function Property({ params }: { params: { id: string } }) {
     <main className="w-full flex flex-col items-center text-center text-[18px] text-gray-800 font-p14 border-b">
       <Header />
 
-      <div className="bg-white w-full h-[68px] text-left px-20 py-10">
+      <div className="bg-white w-full h-[68px] text-left px-20 py-10 mt-[5%]">
         <p className=" text-gray-800 font-normal text-[30px]">{property?.location} Getaway</p>
         <div className="w-full flex justify-between text-gray-800 text-sm">
           <p className=""> {property?.rating} . 7 reviews . location</p>
@@ -43,7 +43,7 @@ export default function Property({ params }: { params: { id: string } }) {
       <div className="w-full h-[400px] flex px-20 rounded-xl mt-10">
         <div className="self-stretch w-full rounded-2xl h-[400px] overflow-hidden shrink-0 flex flex-row items-start justify-start gap-[8px]">
           <Image
-            className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-cover"
+            className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-fit"
             alt=""
             src={property?.image as string}
             width={556}
@@ -54,14 +54,14 @@ export default function Property({ params }: { params: { id: string } }) {
               <Image
                 className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-cover"
                 alt=""
-                src="https://source.unsplash.com/random/?car"
+                src="https://source.unsplash.com/random/?house"
                 width={274}
                 height={196}
               />
               <Image
                 className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-cover"
                 alt=""
-                src="https://source.unsplash.com/random/?car"
+                src="https://source.unsplash.com/random/?apartment"
                 width={274}
                 height={196}
               />
@@ -70,14 +70,14 @@ export default function Property({ params }: { params: { id: string } }) {
               <Image
                 className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-cover"
                 alt=""
-                src="https://source.unsplash.com/random/?car"
+                src="https://source.unsplash.com/random/?hotel"
                 width={274}
                 height={196}
               />
               <Image
                 className="self-stretch flex-1 relative max-w-full overflow-hidden max-h-full object-cover"
                 alt=""
-                src="https://source.unsplash.com/random/?car"
+                src="https://source.unsplash.com/random/?lobby"
                 width={274}
                 height={196}
               />
