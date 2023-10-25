@@ -7,7 +7,7 @@ const Header: NextPage = () => {
     <nav className="w-full bg-white shadow-[0px_1px_0px_rgba(0,_0,_0,_0.08)] h-20 flex py-0 px-20 items-center justify-around fixed">
       <div className="w-[250px] h-[155.83px] flex flex-col items-start justify-center">
         <Image
-          className=" shrink-0"
+          className=" shrink-0 object-fit"
           alt=""
           src="logo.svg"
           width={250}
